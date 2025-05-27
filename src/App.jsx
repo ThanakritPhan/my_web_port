@@ -1,24 +1,32 @@
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
+// 1. Updated projects data structure for multiple images
 const projects = [
   {
     id: 1,
     title: "Build a Spotify Connected App",
     description: "Video course that teaches how to build a web app with the Spotify Web API. Topics covered include the principles of REST APIs, user auth flows, Node, Express, React, Styled Components, and more.",
-    imageUrl: "https://user-images.githubusercontent.com/10154383/257998800-35756c10-5088-41ad-971b-90115657830e.png", // URL รูปภาพตัวอย่าง (เหมือนใน screenshot ของคุณ)
-    projectUrl: "https://spotify-app.com", // ลิงก์ไปยังโปรเจกต์จริง
+    imageUrls: [ // Changed from imageUrl to imageUrls and made it an array
+      "https://user-images.githubusercontent.com/10154383/257998800-35756c10-5088-41ad-971b-90115657830e.png",
+      "https://via.placeholder.com/1280x720.png?text=Spotify+App+Screenshot+2",
+      "https://via.placeholder.com/1280x720.png?text=Spotify+App+Screenshot+3"
+    ],
+    projectUrl: "https://spotify-app.com",
     technologies: ["Node.js", "Express", "React", "Spotify API", "Styled Components"],
   },
   {
     id: 2,
     title: "Personal Portfolio Website",
     description: "The website you are currently viewing. Built with React, Tailwind CSS, and Framer Motion for a smooth, responsive, and animated user experience.",
-    imageUrl: "https://via.placeholder.com/320x180.png?text=Portfolio+Site", // Placeholder image
+    imageUrls: [ // Even if one image, keep it as an array for consistency
+      "https://via.placeholder.com/320x180.png?text=Portfolio+Site",
+      "https://images.squarespace-cdn.com/content/v1/607f89e638219e13eee71b1e/1684821560422-SD5V37BAG28BURTLIXUQ/michael-sum-LEpfefQf4rU-unsplash.jpg?format=2500w",
+      "https://www.freepik.com/free-photo/adorable-black-white-kitty-with-monochrome-wall-her_13863414.htm#fromView=search&page=1&position=2&uuid=6a94778b-48b0-4534-a822-2ea6b861742b&query=cat"
+    ],
     projectUrl: "#",
     technologies: ["React", "Tailwind CSS", "Framer Motion"],
   },
-  // เพิ่มโปรเจกต์อื่นๆ ตามต้องการ
 ];
 
 const sections = [
@@ -63,7 +71,167 @@ const ArrowIcon = () => (
   </svg>
 );
 
+// 2. ProjectImageModal Component
+function ProjectImageModal({ isOpen, onClose, images, currentImage, setCurrentImage, projectTitle }) {
+  useEffect(() => {
+    const handleEsc = (event) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+    if (isOpen) {
+      window.addEventListener('keydown', handleEsc);
+      document.body.style.overflow = 'hidden'; // Prevent background scroll
+    } else {
+      document.body.style.overflow = ''; // Restore background scroll
+    }
+    return () => {
+      window.removeEventListener('keydown', handleEsc);
+      document.body.style.overflow = ''; // Ensure scroll is restored on unmount
+    };
+  }, [isOpen, onClose]);
+
+  if (!images || images.length === 0) return null; // Don't render if no images
+
+  const handleNext = () => {
+    setCurrentImage(prev => (prev + 1) % images.length);
+  };
+
+  const handlePrev = () => {
+    setCurrentImage(prev => (prev - 1 + images.length) % images.length);
+  };
+
+  // Image transition variants for Framer Motion
+  const imageVariants = {
+    enter: (direction) => ({
+      x: direction > 0 ? 300 : -300,
+      opacity: 0,
+    }),
+    center: {
+      zIndex: 1,
+      x: 0,
+      opacity: 1,
+    },
+    exit: (direction) => ({
+      zIndex: 0,
+      x: direction < 0 ? 300 : -300,
+      opacity: 0,
+    }),
+  };
+  const [direction, setDirection] = useState(0);
+
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+      className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4"
+      onClick={onClose} // Close on backdrop click
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-title"
+    >
+      <div
+        className="bg-[#0e2038] p-4 sm:p-6 rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] flex flex-col relative"
+        onClick={e => e.stopPropagation()} // Prevent closing when clicking inside modal content
+      >
+        <div className="flex justify-between items-center mb-4">
+            <h2 id="modal-title" className="text-xl text-slate-200 font-semibold truncate">
+                {projectTitle}
+            </h2>
+            <button
+              onClick={onClose}
+              className="text-gray-400 hover:text-white text-3xl leading-none p-1 -mr-1"
+              aria-label="Close image gallery"
+            >
+              ×
+            </button>
+        </div>
+
+        <div className="relative flex-grow flex items-center justify-center overflow-hidden mb-4 min-h-[200px] sm:min-h-[400px]">
+          <AnimatePresence initial={false} custom={direction}>
+            <motion.img
+              key={currentImage} // Important for AnimatePresence to detect changes
+              src={images[currentImage]}
+              alt={`Image ${currentImage + 1} of ${images.length} for ${projectTitle}`}
+              className="max-w-full max-h-[60vh] sm:max-h-[65vh] object-contain rounded shadow-lg"
+              custom={direction}
+              variants={imageVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{
+                x: { type: "spring", stiffness: 300, damping: 30 },
+                opacity: { duration: 0.2 },
+              }}
+              // Add drag for swipe (optional advanced feature)
+              // drag="x"
+              // dragConstraints={{ left: 0, right: 0 }}
+              // dragElastic={1}
+              // onDragEnd={(e, { offset, velocity }) => {
+              //   const swipe = Math.abs(offset.x) * velocity.x;
+              //   if (swipe < -10000) {
+              //     setDirection(1); handleNext();
+              //   } else if (swipe > 10000) {
+              //     setDirection(-1); handlePrev();
+              //   }
+              // }}
+            />
+          </AnimatePresence>
+        </div>
+
+        {images.length > 1 && (
+          <div className="flex justify-between items-center mt-auto pt-4 border-t border-slate-700">
+            <button
+              onClick={() => { setDirection(-1); handlePrev(); }}
+              className="bg-teal-600/60 hover:bg-teal-500/80 text-teal-100 px-4 py-2 rounded text-sm transition-colors disabled:opacity-50"
+              aria-label="Previous image"
+            >
+              Prev
+            </button>
+            <span className="text-sm text-gray-400">
+              {currentImage + 1} / {images.length}
+            </span>
+            <button
+              onClick={() => { setDirection(1); handleNext(); }}
+              className="bg-teal-600/60 hover:bg-teal-500/80 text-teal-100 px-4 py-2 rounded text-sm transition-colors disabled:opacity-50"
+              aria-label="Next image"
+            >
+              Next
+            </button>
+          </div>
+        )}
+      </div>
+    </motion.div>
+  );
+}
+
 export default function App() {
+  // 3. State for Modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedProjectImages, setSelectedProjectImages] = useState([]);
+  const [selectedProjectTitle, setSelectedProjectTitle] = useState('');
+  const [currentImageIndexInModal, setCurrentImageIndexInModal] = useState(0);
+
+  const openImageModal = (images, title, startIndex = 0) => {
+    setSelectedProjectImages(images);
+    setSelectedProjectTitle(title);
+    setCurrentImageIndexInModal(startIndex);
+    setIsModalOpen(true);
+  };
+
+  const closeImageModal = () => {
+    setIsModalOpen(false);
+    // Optional: Reset state after a delay to allow exit animation
+    // setTimeout(() => {
+    //   setSelectedProjectImages([]);
+    //   setSelectedProjectTitle('');
+    // }, 300); // Match modal exit transition duration
+  };
+
+
   return (
     <div className="bg-[#0a192f] text-gray-300 font-sans min-h-screen flex justify-center px-4 py-20">
       <div className="w-full max-w-7xl flex flex-col md:flex-row md:relative gap-12">
@@ -71,9 +239,9 @@ export default function App() {
         <aside className="w-full md:fixed md:left-[calc(50vw-640px)] md:top-20 md:w-[512px] md:h-[calc(100vh-5rem)] md:overflow-y-auto space-y-6 self-start z-10">
           <div className="text-white text-5xl font-bold">THANAKRIT PHANHINKRONG</div>
           <p className="text-gray-400 text-sm leading-relaxed">
-            I am a fourth-year computer engineering student with a keen interest 
-            in software development. I am eager to apply the skills and knowledge 
-            I have acquired in my studies to real-world scenarios. My goal is to 
+            I am a fourth-year computer engineering student with a keen interest
+            in software development. I am eager to apply the skills and knowledge
+            I have acquired in my studies to real-world scenarios. My goal is to
             gain practical experience and improve my knowledge in the field.
           </p>
           <nav className="space-y-2">
@@ -97,17 +265,17 @@ export default function App() {
             {experiences.map((exp, i) => (
               <motion.div
                 key={exp.id}
-                className="flex flex-col md:flex-row md:space-x-8"
+                className="group flex flex-col md:flex-row md:space-x-8 p-4 rounded-lg hover:bg-[#112240]/60 transition-all duration-300"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: i * 0.2 }}
                 viewport={{ once: true }}
               >
-                <div className="text-teal-400 font-mono text-sm md:w-1/5 mb-2 md:mb-0">
+                <div className="text-teal-400 font-mono text-sm md:w-1/4 mb-2 md:mb-0 pt-1"> {/* Adjusted width slightly for better alignment */}
                   {exp.year}
                 </div>
-                <div className="md:w-2/3 space-y-2">
-                  <h2 className="text-lg font-semibold text-white">
+                <div className="md:w-3/4 space-y-2">
+                  <h2 className="text-lg font-semibold text-white group-hover:text-teal-300 transition-colors">
                     {exp.role} · <span className="text-teal-400">{exp.company}</span>
                   </h2>
                   <p className="text-gray-400 text-sm">{exp.description}</p>
@@ -126,10 +294,10 @@ export default function App() {
             ))}
           </section>
 
-          {/* Projects Section - ปรับปรุงใหม่ */}
+          {/* Projects Section - Updated for Modal */}
           <section id="projects" className="space-y-10 scroll-mt-24">
             <h1 className="text-3xl font-bold text-white mb-8">Projects</h1>
-            <div className="space-y-12"> {/* Container สำหรับ project cards */}
+            <div className="space-y-12">
               {projects.map((project, i) => (
                 <motion.div
                   key={project.id}
@@ -137,17 +305,27 @@ export default function App() {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: i * 0.2 }}
                   viewport={{ once: true }}
-                  className="group flex flex-col sm:flex-row gap-x-6 gap-y-4 p-4 rounded-lg bg-[#112240] hover:bg-[#192d4e] transition-colors duration-300 shadow-lg"
+                  className="group flex flex-col sm:flex-row gap-x-6 gap-y-4 p-4 rounded-lg bg-[#0f2744] hover:bg-[#143050] transition-all duration-300 shadow-lg"
                 >
-                  {/* Image Thumbnail */}
-                  <div className="w-full sm:w-48 md:w-56 shrink-0">
-                    <a href={project.projectUrl} target="_blank" rel="noopener noreferrer" aria-label={`View project: ${project.title}`}>
-                      <img
-                        src={project.imageUrl}
-                        alt={`Thumbnail for ${project.title}`}
-                        className="rounded-md w-full h-auto object-cover aspect-[16/10] border-2 border-slate-700 group-hover:border-teal-500/70 transition-all duration-300"
-                      />
-                    </a>
+                  {/* Image Thumbnail - Click to open modal */}
+                  <div
+                    className="w-full sm:w-48 md:w-56 shrink-0 cursor-pointer relative overflow-hidden rounded-md border-2 border-slate-700 group-hover:border-teal-500/70 transition-all duration-300"
+                    onClick={() => openImageModal(project.imageUrls, project.title)}
+                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') openImageModal(project.imageUrls, project.title); }}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`View image gallery for ${project.title}`}
+                  >
+                    <img
+                      src={project.imageUrls[0]} // Display the first image as thumbnail
+                      alt={`Thumbnail for ${project.title}. Click to view gallery.`}
+                      className="w-full h-auto object-cover aspect-[16/10] transition-transform duration-300 group-hover:scale-105"
+                    />
+                     {project.imageUrls.length > 1 && (
+                        <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
+                            {project.imageUrls.length} photos
+                        </div>
+                    )}
                   </div>
 
                   {/* Text Content */}
@@ -157,7 +335,9 @@ export default function App() {
                         href={project.projectUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="hover:text-teal-300 focus-visible:text-teal-300 transition-colors inline-flex items-center font-semibold"
+                        className="hover:text-teal-300 focus-visible:text-teal-300 transition-colors inline-flex items-center font-semibold group-hover:text-teal-300"
+                        onClick={(e) => e.stopPropagation()} // Prevent modal open if clicking the link specifically
+                         aria-label={`${project.title} (opens in a new tab)`}
                       >
                         <span>{project.title}</span>
                         <ArrowIcon />
@@ -184,6 +364,20 @@ export default function App() {
           </section>
         </main>
       </div>
+
+      {/* 4. Render Modal using AnimatePresence */}
+      <AnimatePresence>
+        {isModalOpen && (
+          <ProjectImageModal
+            isOpen={isModalOpen}
+            onClose={closeImageModal}
+            images={selectedProjectImages}
+            currentImage={currentImageIndexInModal}
+            setCurrentImage={setCurrentImageIndexInModal}
+            projectTitle={selectedProjectTitle}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
