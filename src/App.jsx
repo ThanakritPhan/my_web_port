@@ -5,27 +5,84 @@ import { motion, AnimatePresence } from "framer-motion";
 const projects = [
   {
     id: 1,
-    title: "Build a Spotify Connected App",
-    description: "Video course that teaches how to build a web app with the Spotify Web API. Topics covered include the principles of REST APIs, user auth flows, Node, Express, React, Styled Components, and more.",
+    title: "ManPower HR Management",
+    description: "Video course that teaches how to build a web app with the Spotify Web API. Topics covered include the principles of REST APIs, user auth flows, Node, Express, React.js, Styled Components, and more.",
     imageUrls: [ // Changed from imageUrl to imageUrls and made it an array
-      "https://user-images.githubusercontent.com/10154383/257998800-35756c10-5088-41ad-971b-90115657830e.png",
-      "https://via.placeholder.com/1280x720.png?text=Spotify+App+Screenshot+2",
-      "https://via.placeholder.com/1280x720.png?text=Spotify+App+Screenshot+3"
+      "images/mp_hr_management/home.png",
+      "images/mp_hr_management/request_detail.png",
+      "images/mp_hr_management/form1.png",
+      "images/mp_hr_management/form2.png",
+      "images/mp_hr_management/form3.png",
+      "images/mp_hr_management/form4.png",
+      "images/mp_hr_management/report.png",
+      "images/mp_hr_management/report_detail.png",
+      "images/mp_hr_management/approve1.png",
+      "images/mp_hr_management/approve2.png",
+      "images/mp_hr_management/approve3.png",
     ],
-    projectUrl: "https://spotify-app.com",
-    technologies: ["Node.js", "Express", "React", "Spotify API", "Styled Components"],
+    projectUrl: "https://github.com/SaranLilly/MPRequestHR",
+    technologies: ["PHP","HTML", "CSS","Javascript","Laravel","Vuetify 2","MySQL","Git","Github"],
   },
   {
     id: 2,
-    title: "Personal Portfolio Website",
-    description: "The website you are currently viewing. Built with React, Tailwind CSS, and Framer Motion for a smooth, responsive, and animated user experience.",
-    imageUrls: [ // Even if one image, keep it as an array for consistency
-      "https://via.placeholder.com/320x180.png?text=Portfolio+Site",
-      "https://images.squarespace-cdn.com/content/v1/607f89e638219e13eee71b1e/1684821560422-SD5V37BAG28BURTLIXUQ/michael-sum-LEpfefQf4rU-unsplash.jpg?format=2500w",
-      "https://www.freepik.com/free-photo/adorable-black-white-kitty-with-monochrome-wall-her_13863414.htm#fromView=search&page=1&position=2&uuid=6a94778b-48b0-4534-a822-2ea6b861742b&query=cat"
+    title: "Real-Time Streaming Protocol ( RTSP )",
+    description: "Video course that teaches how to build a web app with the Spotify Web API. Topics covered include the principles of REST APIs, user auth flows, Node, Express, React.js, Styled Components, and more.",
+    imageUrls: [ // Changed from imageUrl to imageUrls and made it an array
+      "images/advice_python/tracking.png",
+      "images/advice_python/in-out.png",
+      "images/advice_python/in-out_web.png",
+      "images/advice_python/desktop_rtsp.png",
     ],
-    projectUrl: "#",
-    technologies: ["React", "Tailwind CSS", "Framer Motion"],
+    projectUrl: "https://drive.google.com/drive/folders/1zoPFM2DENfNy4fc2at-P4G9pfK4WcPk1?usp=sharing",
+    technologies: ["Python", "HTML", "CSS","Javascript","Flask"],
+  },
+  {
+    id: 3,
+    title: "Health-Insurance",
+    description: "Video course that teaches how to build a web app with the Spotify Web API. Topics covered include the principles of REST APIs, user auth flows, Node, Express, React.js, Styled Components, and more.",
+    imageUrls: [ // Changed from imageUrl to imageUrls and made it an array
+      "images/health_insurance/home.png"
+    ],
+    projectUrl: "https://github.com/paiizxqh/health-insurance",
+    technologies: ["Python", "HTML", "CSS","Javascript","React.js","Github"],
+  },
+  {
+    id: 4,
+    title: "E-Commerce Web Application",
+    description: "The website you are currently viewing. Built with React.js, Tailwind CSS, and Framer Motion for a smooth, responsive, and animated user experience.",
+    imageUrls: [ // Even if one image, keep it as an array for consistency
+      "images/ecommerce/login.png",
+      "images/ecommerce/home.png",
+      "images/ecommerce/promotion.png",
+      "images/ecommerce/purchase_promotion.png",
+      "images/ecommerce/product.png",
+      "images/ecommerce/board.png",
+      "images/ecommerce/history.png",
+      "images/ecommerce/notification.png",
+      "images/ecommerce/cart.png",
+      "images/ecommerce/purchase.png",
+      "images/ecommerce/manage_member.png",
+      "images/ecommerce/manage_check.png",
+      "images/ecommerce/manage_product.png",
+      "images/ecommerce/manage_promotion1.png",
+      "images/ecommerce/manage_promotion2.png",
+    ],
+    projectUrl: "https://github.com/ThanakritPhan/SE_66_4",
+    technologies: ["PHP","HTML", "CSS","Javascript","Laravel","MySQL","Git","Github"],
+  },
+  {
+    id: 5,
+    title: "Watermark by Text Web Application",
+    description: "The website you are currently viewing. Built with React.js, Tailwind CSS, and Framer Motion for a smooth, responsive, and animated user experience.",
+    imageUrls: [ // Even if one image, keep it as an array for consistency
+      "images/watermark_by_text/register.png",
+      "images/watermark_by_text/login.png",
+      "images/watermark_by_text/home.png",
+      "images/watermark_by_text/profile.png",
+      "images/watermark_by_text/upload.png",
+    ],
+    projectUrl: "https://github.com/paiizxqh/watermark-by-text",
+    technologies: ["Python","HTML", "CSS","Javascript","React.js","MongoDB","Flask","Git","Github"],
   },
 ];
 
@@ -42,7 +99,7 @@ const experiences = [
     year: "2024 — 2025",
     description:
       "Developed a web application for Manpower HR Management encompassing the full Software Development Life Cycle ( SDLC ) from requirements gathering to testing",
-    skills: ["JavaScript", "HTML", "CSS","PHP","Laravel","MySQL"],
+    skills: ["PHP","Python","HTML", "CSS","Javascript","Laravel","React-Native","Flask","MySQL","Git","Github"],
   },
   {
     id: 2,
@@ -151,7 +208,7 @@ function ProjectImageModal({ isOpen, onClose, images, currentImage, setCurrentIm
         </div>
 
         <div className="relative flex-grow flex items-center justify-center overflow-hidden mb-4 min-h-[200px] sm:min-h-[400px]">
-          <AnimatePresence initial={false} custom={direction}>
+          <AnimatePresence mode="wait" custom={direction} initial={false}>
             <motion.img
               key={currentImage} // Important for AnimatePresence to detect changes
               src={images[currentImage]}
