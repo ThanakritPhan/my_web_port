@@ -315,7 +315,7 @@ export default function App() {
         </aside>
 
         {/* Main Content (60%) */}
-        <main className="w-full md:ml-[548px] md:w-[768px] space-y-24 scroll-smooth">
+        <main className="w-full md:ml-[560px] md:w-[768px] space-y-24 scroll-smooth">
           {/* Experience Section */}
           <section id="experience" className="space-y-10 scroll-mt-24">
             <h1 className="text-3xl font-bold text-white">Experience</h1>
