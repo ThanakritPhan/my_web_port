@@ -296,7 +296,7 @@ export default function App() {
         <aside className="w-full md:fixed md:left-[calc(50vw-640px)] md:top-20 md:w-[512px] md:h-[calc(100vh-5rem)] md:overflow-y-auto space-y-6 self-start z-10">
           <div className="text-white text-5xl font-bold">THANAKRIT PHANHINKRONG</div>
           <p className="text-gray-400 text-sm leading-relaxed">
-            I am a fourth-year computer engineering student with a keen interest
+            I am software engineering with a keen interest
             in software development. I am eager to apply the skills and knowledge
             I have acquired in my studies to real-world scenarios. My goal is to
             gain practical experience and improve my knowledge in the field.
