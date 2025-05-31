@@ -1,0 +1,47 @@
+name: Deploy Vite project to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main # หรือ branch หลักที่คุณใช้ (เช่น master)
+  workflow_dispatch: # อนุญาตให้รัน workflow ด้วยมือจากแท็บ Actions
+
+# กำหนดสิทธิ์ให้ GITHUB_TOKEN เพื่อให้สามารถ deploy ไปยัง GitHub Pages ได้
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }} # จะแสดง URL ของหน้าที่ deploy แล้ว
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4 # ใช้ version ล่าสุด
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4 # ใช้ version ล่าสุด
+        with:
+          node-version: '18' # หรือ version ที่คุณใช้ (ดูจาก package.json engines ถ้ามี)
+          cache: 'npm' # หรือ 'yarn' ถ้าคุณใช้ yarn
+
+      - name: Install dependencies
+        run: npm ci # 'ci' เร็วกว่าและปลอดภัยกว่า 'install' สำหรับ CI
+
+      - name: Build project
+        run: npm run build # รันคำสั่ง build จาก package.json
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4 # ใช้ version ล่าสุด
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3 # ใช้ version ล่าสุด
+        with:
+          path: ./dist # <--- สำคัญมาก! ต้องเป็นโฟลเดอร์ output ของ Vite
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4 # ใช้ version ล่าสุด
