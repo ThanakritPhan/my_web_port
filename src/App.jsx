@@ -6,7 +6,7 @@ const projects = [
   {
     id: 1,
     title: "ManPower HR Management",
-    description: "Developed a web application for Manpower HR Management encompassing the full Software Development Life Cycle ( SDLC ) from requirements gathering to testing",
+    description: "Developed web-based Manpower HR Management system using PHP-Laravel. Managed the full project lifecycle, from initial requirement gathering and system design through to code implementation",
     imageUrls: [ // Changed from imageUrl to imageUrls and made it an array
       "images/mp_hr_management/home.png",
       "images/mp_hr_management/request_detail.png",
@@ -26,7 +26,7 @@ const projects = [
   {
     id: 2,
     title: "Real-Time Streaming Protocol ( RTSP )",
-    description: "Video course that teaches how to build a web app with the Spotify Web API. Topics covered include the principles of REST APIs, user auth flows, Node, Express, React.js, Styled Components, and more.",
+    description: "Developed and implemented RTSP technology by creating a Flask-based web application for tracking and logging personnel entry/exit within the company, alongside developing a centralized management system for RTSP cameras across various branch offices",
     imageUrls: [ // Changed from imageUrl to imageUrls and made it an array
       "images/advice_python/tracking.png",
       "images/advice_python/in-out.png",
@@ -39,7 +39,7 @@ const projects = [
   {
     id: 3,
     title: "Health-Insurance",
-    description: "Video course that teaches how to build a web app with the Spotify Web API. Topics covered include the principles of REST APIs, user auth flows, Node, Express, React.js, Styled Components, and more.",
+    description: "Developed a web application designed to analyze and predict individual health insurance costs. The focus was on creating a user-friendly tool on a web platform for cost estimation",
     imageUrls: [ // Changed from imageUrl to imageUrls and made it an array
       "images/health_insurance/home.png"
     ],
