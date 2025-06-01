@@ -6,7 +6,7 @@ const projects = [
   {
     id: 1,
     title: "ManPower HR Management",
-    description: "Video course that teaches how to build a web app with the Spotify Web API. Topics covered include the principles of REST APIs, user auth flows, Node, Express, React.js, Styled Components, and more.",
+    description: "Developed a web application for Manpower HR Management encompassing the full Software Development Life Cycle ( SDLC ) from requirements gathering to testing",
     imageUrls: [ // Changed from imageUrl to imageUrls and made it an array
       "images/mp_hr_management/home.png",
       "images/mp_hr_management/request_detail.png",
@@ -49,7 +49,7 @@ const projects = [
   {
     id: 4,
     title: "E-Commerce Web Application",
-    description: "The website you are currently viewing. Built with React.js, Tailwind CSS, and Framer Motion for a smooth, responsive, and animated user experience.",
+    description: "Develop a web application for an E-Commerce business using the Laravel Framework",
     imageUrls: [ // Even if one image, keep it as an array for consistency
       "images/ecommerce/login.png",
       "images/ecommerce/home.png",
@@ -73,7 +73,7 @@ const projects = [
   {
     id: 5,
     title: "Watermark by Text Web Application",
-    description: "The website you are currently viewing. Built with React.js, Tailwind CSS, and Framer Motion for a smooth, responsive, and animated user experience.",
+    description: "Developed an online platform for visual artists to showcase their work, featuring automated watermarking for image protection upon upload",
     imageUrls: [ // Even if one image, keep it as an array for consistency
       "images/watermark_by_text/register.png",
       "images/watermark_by_text/login.png",
